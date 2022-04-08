@@ -32,10 +32,6 @@ class MyHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Version 3: Convert BlocListener to BlocConsumer
-    // This will use both a listener and a builder.
-    // This is a "cleaner" method than nesting BlocBuilder as a child under
-    // BlockListener.
     return Scaffold(
       body: BlocConsumer<CounterCubit, CounterState>(
         listener: (context, state) {
@@ -60,7 +56,6 @@ class MyHomePage extends StatelessWidget {
         builder: (context, state) {
           return Center(
             child: Text(
-              // By using builder, just need the counter value.
               '${state.counter}',
               style: const TextStyle(
                 fontSize: 52.0,
@@ -74,7 +69,9 @@ class MyHomePage extends StatelessWidget {
         children: [
           FloatingActionButton(
             onPressed: () {
-              BlocProvider.of<CounterCubit>(context).increment();
+              // Version 4: Changed Provider.of... to context.read...
+              // BlocProvider.of<CounterCubit>(context).increment();
+              context.read<CounterCubit>().increment();
             },
             child: const Icon(Icons.add),
             heroTag: 'increment',
@@ -82,7 +79,7 @@ class MyHomePage extends StatelessWidget {
           const SizedBox(width: 10.0),
           FloatingActionButton(
             onPressed: () {
-              BlocProvider.of<CounterCubit>(context).decrement();
+              context.read<CounterCubit>().decrement();
             },
             child: const Icon(Icons.remove),
             heroTag: 'decrement',
