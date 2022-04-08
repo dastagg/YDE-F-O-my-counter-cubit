@@ -31,18 +31,16 @@ class MyHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Version 1: Use BlocProvider.of in Text widget and FAB's.
     return Scaffold(
-      body: BlocBuilder<CounterCubit, CounterState>(
-        builder: (context, state) {
-          return Center(
-            child: Text(
-              '${state.counter}',
-              style: const TextStyle(
-                fontSize: 52.0,
-              ),
-            ),
-          );
-        },
+      body: Center(
+        child: Text(
+          // Opposite of Provider, listen must be set to "true".
+          '${BlocProvider.of<CounterCubit>(context, listen: true).state.counter}',
+          style: const TextStyle(
+            fontSize: 52.0,
+          ),
+        ),
       ),
       floatingActionButton: Row(
         mainAxisAlignment: MainAxisAlignment.end,
