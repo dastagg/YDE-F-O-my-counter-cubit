@@ -35,7 +35,8 @@ class MyHomePage extends StatelessWidget {
     return Scaffold(
       body: Center(
         child: Text(
-          // Opposite of Provider, listen must be set to "true".
+          // Opposite of Provider, listen must be set to "true" in order to read
+          // the current state.
           '${BlocProvider.of<CounterCubit>(context, listen: true).state.counter}',
           style: const TextStyle(
             fontSize: 52.0,
@@ -47,6 +48,8 @@ class MyHomePage extends StatelessWidget {
         children: [
           FloatingActionButton(
             onPressed: () {
+              // Opposite of Provider, default is false so this will update
+              // the current state.
               BlocProvider.of<CounterCubit>(context).increment();
             },
             child: const Icon(Icons.add),
@@ -55,6 +58,8 @@ class MyHomePage extends StatelessWidget {
           const SizedBox(width: 10.0),
           FloatingActionButton(
             onPressed: () {
+              // Opposite of Provider, default is false so this will update
+              // the current state.
               BlocProvider.of<CounterCubit>(context).decrement();
             },
             child: const Icon(Icons.remove),
