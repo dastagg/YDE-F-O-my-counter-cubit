@@ -31,25 +31,26 @@ class MyHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Version 1: Use BlocProvider.of in Text widget and FAB's.
+    // Version 2: Wrap Center widget with BlocBuilder:
     return Scaffold(
-      body: Center(
-        child: Text(
-          // Opposite of Provider, listen must be set to "true" in order to read
-          // the current state.
-          '${BlocProvider.of<CounterCubit>(context, listen: true).state.counter}',
-          style: const TextStyle(
-            fontSize: 52.0,
-          ),
-        ),
+      body: BlocBuilder<CounterCubit, CounterState>(
+        builder: (context, state) {
+          return Center(
+            child: Text(
+              // By using builder, just need the counter value.
+              '${state.counter}',
+              style: const TextStyle(
+                fontSize: 52.0,
+              ),
+            ),
+          );
+        },
       ),
       floatingActionButton: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           FloatingActionButton(
             onPressed: () {
-              // Opposite of Provider, default is false so this will update
-              // the current state.
               BlocProvider.of<CounterCubit>(context).increment();
             },
             child: const Icon(Icons.add),
@@ -58,8 +59,6 @@ class MyHomePage extends StatelessWidget {
           const SizedBox(width: 10.0),
           FloatingActionButton(
             onPressed: () {
-              // Opposite of Provider, default is false so this will update
-              // the current state.
               BlocProvider.of<CounterCubit>(context).decrement();
             },
             child: const Icon(Icons.remove),
