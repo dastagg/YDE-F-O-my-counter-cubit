@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:my_counter_cubit/other_page.dart';
 
 import '../cubits/counter/counter_cubit.dart';
 
@@ -32,9 +33,32 @@ class MyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Version 2: Wrap Center widget with BlocBuilder:
+    // Just BlocBuilder doesnt' work with the dialog box or page open
+    // Must wrap BlocBuilder with BlocListener and move if statement
+    // to listener parameter.
     return Scaffold(
-      body: BlocBuilder<CounterCubit, CounterState>(
-        builder: (context, state) {
+      body: BlocListener<CounterCubit, CounterState>(
+        listener: (context, state) {
+          if (state.counter == 3) {
+            showDialog(
+              context: context,
+              builder: (context) {
+                return AlertDialog(
+                  content: Text('counter is ${state.counter}'),
+                );
+              },
+            );
+          } else if (state.counter == -1) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) {
+                return const OtherPage();
+              }),
+            );
+          }
+        },
+        child:
+            BlocBuilder<CounterCubit, CounterState>(builder: (context, state) {
           return Center(
             child: Text(
               // By using builder, just need the counter value.
@@ -44,7 +68,7 @@ class MyHomePage extends StatelessWidget {
               ),
             ),
           );
-        },
+        }),
       ),
       floatingActionButton: Row(
         mainAxisAlignment: MainAxisAlignment.end,
