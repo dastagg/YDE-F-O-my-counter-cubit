@@ -32,12 +32,12 @@ class MyHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Version 2: Wrap Center widget with BlocBuilder:
-    // Just BlocBuilder doesnt' work with the dialog box or page open
-    // Must wrap BlocBuilder with BlocListener and move if statement
-    // to listener parameter.
+    // Version 3: Convert BlocListener to BlocConsumer
+    // This will use both a listener and a builder.
+    // This is a "cleaner" method than nesting BlocBuilder as a child under
+    // BlockListener.
     return Scaffold(
-      body: BlocListener<CounterCubit, CounterState>(
+      body: BlocConsumer<CounterCubit, CounterState>(
         listener: (context, state) {
           if (state.counter == 3) {
             showDialog(
@@ -57,8 +57,7 @@ class MyHomePage extends StatelessWidget {
             );
           }
         },
-        child:
-            BlocBuilder<CounterCubit, CounterState>(builder: (context, state) {
+        builder: (context, state) {
           return Center(
             child: Text(
               // By using builder, just need the counter value.
@@ -68,7 +67,7 @@ class MyHomePage extends StatelessWidget {
               ),
             ),
           );
-        }),
+        },
       ),
       floatingActionButton: Row(
         mainAxisAlignment: MainAxisAlignment.end,
